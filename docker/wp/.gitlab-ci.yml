@@ -1,0 +1,38 @@
+image: docker:19.03.13
+
+.before:
+  before_script:
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+services:
+  - name: docker:19.03.13-dind
+    alias: docker
+
+stages:
+  - build
+  - test
+  - deploy
+
+build_image:
+    stage: build
+    extends: .before
+    script:
+      - docker build -t $DOCKER_REPOSITORY:latest .
+      - docker push $DOCKER_REPOSITORY:latest
+    tags:
+      - wp
+
+deploy_image:
+     image: alpine
+     stage: deploy
+     # extends: .before
+     before_script:
+       - apk add openssh-client
+       - eval $(ssh-agent -s)
+       - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+       - mkdir -p ~/.ssh
+       - chmod 700 ~/.ssh
+     script:
+       - ssh -o StrictHostKeyChecking=no root@172.26.0.1 "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD && docker rm -f dev-site && docker pull $DOCKER_REPOSITORY:latest && docker run -d -p 80:80 -p 443:443 --name dev-site -e WORDPRESS_DB_HOST=$DB_HOST:$DB_PORT -e WORDPRESS_DB_NAME=$DEV_DB -e WORDPRESS_DB_USER=$DEV_DB_USERNAME -e WORDPRESS_DB_PASSWORD=$DEV_DB_PASSWORD $DOCKER_REPOSITORY:latest"
+     tags:
+       - wp
