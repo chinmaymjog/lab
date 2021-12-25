@@ -7,7 +7,7 @@ services:
      ports:
        - "80:80"
      environment:
-       WORDPRESS_DB_HOST: "db-mysql-blr1-24614-do-user-9686309-0.b.db.ondigitalocean.com:25060"
-       WORDPRESS_DB_USER: "doadmin"
-       WORDPRESS_DB_PASSWORD: "J6qvODO8bdYbRClZ"
-       WORDPRESS_DB_NAME: "defaultdb"
+       WORDPRESS_DB_HOST: ""
+       WORDPRESS_DB_USER: ""
+       WORDPRESS_DB_PASSWORD: ""
+       WORDPRESS_DB_NAME: ""
