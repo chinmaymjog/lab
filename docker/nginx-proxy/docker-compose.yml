@@ -3,7 +3,7 @@ version: "3"
 services:
   nginx:
     image: 'jc21/nginx-proxy-manager:latest'
-    restart: restart
+    restart: always
     container_name: nginx
     ports:
       # These ports are in format <host-port>:<container-port>
@@ -28,7 +28,7 @@ services:
 
   nginx-db:
     image: 'jc21/mariadb-aria:latest'
-    restart: restart
+    restart: always
     container_name: nginx-db
     environment:
       MYSQL_ROOT_PASSWORD: "${ROOT_PASS}"
