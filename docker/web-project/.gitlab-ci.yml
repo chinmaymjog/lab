@@ -1,0 +1,29 @@
+docker-prod-deploy:
+  stage: build
+  before_script:
+    - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+  script:
+    - docker build --pull -t "$DOCKER_REPO/$CI_COMMIT_REF_NAME" .
+    - docker push "$DOCKER_REPO/$CI_COMMIT_REF_NAME"
+  tags:
+    - swarm
+  only:
+    - master
+
+docker-deploy-master:
+  variables:
+    ENV: prod-env
+  stage: deploy
+  before_script:
+    - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+  script:
+    - scripts/deploy.sh
+  environment:
+    name: production
+    url: http://localhost
+  tags:
+    - swarm
+  only:
+    - master
+
+
