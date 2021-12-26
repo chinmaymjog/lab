@@ -9,7 +9,7 @@ services:
             RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
             RUNDECK_DATABASE_USERNAME: "${DB_USER}"
             RUNDECK_DATABASE_PASSWORD: "${DB_PASS}" 
-            RUNDECK_DATABASE_URL: jdbc:mysql://rundeck-db/"${DB_NAME}"?autoReconnect=true&useSSL=false
+            RUNDECK_DATABASE_URL: jdbc:mysql://rundeck-db/${DB_NAME}?autoReconnect=true&useSSL=false
             RUNDECK_GRAILS_URL: ${URL}
         ports:
           - 4440:4440
