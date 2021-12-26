@@ -5,8 +5,6 @@ services:
         image: rundeck/rundeck:3.4.9
         restart: always
         container_name: rundeck
-        links:
-          - mysql
         environment:
             RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
             RUNDECK_DATABASE_USERNAME: "${DB_USER}"
