@@ -1,28 +1,35 @@
-version: '3'
+version: "3"
 
 services:
     rundeck:
         image: rundeck/rundeck:3.4.9
+        restart: always
+        container_name: rundeck
         links:
           - mysql
         environment:
             RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
-            RUNDECK_DATABASE_USERNAME: rundeck
-            RUNDECK_DATABASE_PASSWORD: rundeck 
-            RUNDECK_DATABASE_URL: jdbc:mysql://mysql/rundeck?autoReconnect=true&useSSL=false
+            RUNDECK_DATABASE_USERNAME: "${DB_USER}"
+            RUNDECK_DATABASE_PASSWORD: "${DB_PASS}" 
+            RUNDECK_DATABASE_URL: jdbc:mysql://rundeck-db/"${DB_NAME}"?autoReconnect=true&useSSL=false
+            RUNDECK_GRAILS_URL=${URL}
         ports:
           - 4440:4440
-    mysql:
+    rundeck-db:
         image: mysql:5.7
+        restart: always
+        container_name: rundeck-db
         expose:
           - 3306
         environment:
-          - MYSQL_ROOT_PASSWORD=root
-          - MYSQL_DATABASE=rundeck
-          - MYSQL_USER=rundeck
-          - MYSQL_PASSWORD=rundeck
+          - MYSQL_ROOT_PASSWORD="${ROOT_PASS}"
+          - MYSQL_USER="${DB_USER}"
+          - MYSQL_PASSWORD="${DB_PASS}"
+          - MYSQL_DATABASE="${DB_NAME}"
         volumes:
-          - 1dbdata:/var/lib/mysql
+          - ~/rundeck_db_data:/var/lib/mysql
 
-volumes:
-    1dbdata:
+networks:
+  default: 
+    external: true
+    name: front
