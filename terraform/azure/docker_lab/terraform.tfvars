@@ -1,5 +1,5 @@
 project           = "docker-lab"
-location          = "Central India"
+location          = "West US 2"
 rgname            = "rg-docker-lab"
 tfstate_storage   = "azterraformstatefiles"
 tfstate_container = "docker-lab"

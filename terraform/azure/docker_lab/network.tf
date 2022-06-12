@@ -2,7 +2,7 @@ resource "azurerm_virtual_network" "vnet_docker_lab" {
   name                = "vnet-docker-lab"
   location            = var.location
   resource_group_name = var.rgname
-  address_space       = ["10.0.0.0/16"]
+  address_space       = ["10.0.0.0/24"]
 }
 
 resource "azurerm_monitor_diagnostic_setting" "dlog_vnet_docker_lab" {
